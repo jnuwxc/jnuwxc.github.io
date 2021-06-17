@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh_cn">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -22,15 +22,16 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;jnuwxc.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;بحث...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
 <meta name="description" content="EventBus使用简介了解一个新技术，先看官方如何用一句话对它进行定义：  EventBus is a publish&#x2F;subscribe event bus for Android and Java.  翻译成中文：EventBus是一款针对安卓和Java的发布-订阅事件总线。 首先理解一下为何会有事件总线这种技术，在安卓开发中各个组件（ac, frag, service等）负责各自独立的功能">
 <meta property="og:type" content="article">
-<meta property="og:title" content="wxc的博客">
+<meta property="og:title" content="EventBus">
 <meta property="og:url" content="http://jnuwxc.github.io/2021/06/17/EventBus/index.html">
 <meta property="og:site_name" content="wxc的博客">
 <meta property="og:description" content="EventBus使用简介了解一个新技术，先看官方如何用一句话对它进行定义：  EventBus is a publish&#x2F;subscribe event bus for Android and Java.  翻译成中文：EventBus是一款针对安卓和Java的发布-订阅事件总线。 首先理解一下为何会有事件总线这种技术，在安卓开发中各个组件（ac, frag, service等）负责各自独立的功能">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale">
 <meta property="og:image" content="http://jnuwxc.github.io/Users/admin/Downloads/EventBus-Publish-Subscribe.png">
-<meta property="article:published_time" content="2021-06-17T07:28:30.020Z">
-<meta property="article:modified_time" content="2021-06-17T09:11:42.790Z">
+<meta property="article:published_time" content="2021-06-17T02:06:57.000Z">
+<meta property="article:modified_time" content="2021-06-17T09:28:56.346Z">
 <meta property="article:author" content="wxc">
+<meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://jnuwxc.github.io/Users/admin/Downloads/EventBus-Publish-Subscribe.png">
 
@@ -39,10 +40,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh_cn&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;jnuwxc.github.io&#x2F;2021&#x2F;06&#x2F;17&#x2F;EventBus&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;17&#x2F;EventBus&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;jnuwxc.github.io&#x2F;2021&#x2F;06&#x2F;17&#x2F;EventBus&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;17&#x2F;EventBus&#x2F;&quot;,&quot;title&quot;:&quot;EventBus&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title> | wxc的博客</title>
+<title>EventBus | wxc的博客</title>
   
 
 
@@ -109,7 +110,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#EventBus"><span class="nav-number">1.</span> <span class="nav-text">EventBus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">简单使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">1.0.2.</span> <span class="nav-text">解析</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#EventBus"><span class="nav-number">1.</span> <span class="nav-text">EventBus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">简单使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">解析</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -125,6 +126,10 @@
           <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">المقالات</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">الوسوم</span>
       </div>
   </nav>
 </div>
@@ -161,7 +166,7 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh_cn">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
     <link itemprop="mainEntityOfPage" href="http://jnuwxc.github.io/2021/06/17/EventBus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -175,7 +180,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          EventBus
         </h1>
 
         <div class="post-meta-container">
@@ -187,7 +192,7 @@
       <span class="post-meta-item-text">نُشر في</span>
       
 
-      <time title="أُنشأ: 2021-06-17 15:28:30 / عُدل: 17:11:42" itemprop="dateCreated datePublished" datetime="2021-06-17T15:28:30+08:00">2021-06-17</time>
+      <time title="أُنشأ: 2021-06-17 10:06:57 / عُدل: 17:28:56" itemprop="dateCreated datePublished" datetime="2021-06-17T10:06:57+08:00">2021-06-17</time>
     </span>
 
   
@@ -200,7 +205,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="EventBus"><a href="#EventBus" class="headerlink" title="EventBus"></a>EventBus</h1><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>了解一个新技术，先看官方如何用一句话对它进行定义：</p>
+        <h2 id="EventBus"><a href="#EventBus" class="headerlink" title="EventBus"></a>EventBus</h2><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>了解一个新技术，先看官方如何用一句话对它进行定义：</p>
 <blockquote>
 <p>EventBus is a publish/subscribe event bus for Android and Java.</p>
 </blockquote>
@@ -267,6 +272,9 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
 
         
 
