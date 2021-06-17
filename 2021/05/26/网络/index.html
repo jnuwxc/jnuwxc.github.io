@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;jnuwxc.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="网络[TOC] 计算机网络基础网络分层OSI七层分层，下面这图可以说是很全了。一般计算机网络会关注下面的四层，将5、6、7层统称为应用层，我也习惯于五层的分层。下面就从下往上一次简要介绍一下各层  物理层。物理层(physical layer)的作用是实现相邻计算机节点之间比特流的透明传送，尽可能屏蔽掉具体传输介质和物理设备的差异。物理层比较出名的协议是Ethernet v2（以太网协议）。 数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wxc的博客">
+<meta property="og:url" content="http://jnuwxc.github.io/2021/05/26/%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="wxc的博客">
+<meta property="og:description" content="网络[TOC] 计算机网络基础网络分层OSI七层分层，下面这图可以说是很全了。一般计算机网络会关注下面的四层，将5、6、7层统称为应用层，我也习惯于五层的分层。下面就从下往上一次简要介绍一下各层  物理层。物理层(physical layer)的作用是实现相邻计算机节点之间比特流的透明传送，尽可能屏蔽掉具体传输介质和物理设备的差异。物理层比较出名的协议是Ethernet v2（以太网协议）。 数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://snailclimb.gitee.io/javaguide/docs/network/images/%E4%B8%83%E5%B1%82%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019/7/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B2.png">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019/7/TCP%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png">
+<meta property="article:published_time" content="2021-05-26T03:48:05.957Z">
+<meta property="article:modified_time" content="2021-05-28T03:31:39.726Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="Android, 安卓, android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://snailclimb.gitee.io/javaguide/docs/network/images/%E4%B8%83%E5%B1%82%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+
+
+<link rel="canonical" href="http://jnuwxc.github.io/2021/05/26/%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;jnuwxc.github.io&#x2F;2021&#x2F;05&#x2F;26&#x2F;%E7%BD%91%E7%BB%9C&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;26&#x2F;网络&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title> | wxc的博客</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wxc的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">计算机网络基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82"><span class="nav-number">1.1.1.</span> <span class="nav-text">网络分层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">TCP的三次握手和四次挥手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP"><span class="nav-number">1.1.3.</span> <span class="nav-text">HTTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket"><span class="nav-number">1.1.4.</span> <span class="nav-text">Socket</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A1%86%E6%9E%B6"><span class="nav-number">1.2.</span> <span class="nav-text">网络框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpClient"><span class="nav-number">1.2.1.</span> <span class="nav-text">HttpClient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpURLConnection"><span class="nav-number">1.2.2.</span> <span class="nav-text">HttpURLConnection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OkHttp"><span class="nav-number">1.2.3.</span> <span class="nav-text">OkHttp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit"><span class="nav-number">1.2.4.</span> <span class="nav-text">Retrofit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebView"><span class="nav-number">1.3.</span> <span class="nav-text">WebView</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wxc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jnuwxc.github.io/2021/05/26/%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wxc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wxc的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-26 11:48:05" itemprop="dateCreated datePublished" datetime="2021-05-26T11:48:05+08:00">2021-05-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-28 11:31:39" itemprop="dateModified" datetime="2021-05-28T11:31:39+08:00">2021-05-28</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>[TOC]</p>
+<h2 id="计算机网络基础"><a href="#计算机网络基础" class="headerlink" title="计算机网络基础"></a>计算机网络基础</h2><h3 id="网络分层"><a href="#网络分层" class="headerlink" title="网络分层"></a>网络分层</h3><p>OSI七层分层，下面这图可以说是很全了。一般计算机网络会关注下面的四层，将5、6、7层统称为应用层，我也习惯于五层的分层。下面就从下往上一次简要介绍一下各层</p>
+<ul>
+<li><strong>物理层</strong>。物理层(physical layer)的作用是实现相邻计算机节点之间<strong>比特流</strong>的透明传送，尽可能屏蔽掉具体传输介质和物理设备的差异。物理层比较出名的协议是<strong>Ethernet v2</strong>（以太网协议）。</li>
+<li><strong>数据链路层</strong>。链路层协议就是为同一链路的主机提供数据传输服务。数据链路层把网络层传下来的分组封装成<strong>帧</strong>，把原始比特流转变为逻辑传输路线。</li>
+<li><strong>网络层</strong>。网络层的任务就是选择合适的网间路由和交换结点， 确保数据及时传送。著名的IP协议就是在这一层。</li>
+<li><strong>传输层</strong>。运输层(transport layer)的主要任务就是负责向两台主机进程之间的通信提供通用的数据传输服务。TCP/UDP在这一层。</li>
+<li><strong>应用层</strong>。应用层(application-layer）的任务是通过应用进程间的交互来完成特定网络应用。很多应用相关的协议在这一层，如HTTP、SMTP等</li>
+</ul>
+<p><img src="https://snailclimb.gitee.io/javaguide/docs/network/images/%E4%B8%83%E5%B1%82%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="e m"></p>
+<h3 id="TCP的三次握手和四次挥手"><a href="#TCP的三次握手和四次挥手" class="headerlink" title="TCP的三次握手和四次挥手"></a>TCP的三次握手和四次挥手</h3><p>经典问题了，这次一定要搞清楚。</p>
+<p><strong>建立连接的三次握手</strong></p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019/7/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B2.png" alt="TCP三次握手"></p>
+<ul>
+<li>第一次握手。Client发送请求报文，SYN=1，seq=x。等待Server相应。</li>
+<li>第二次握手。Server收到请求报文，决定可以建立连接，发送确认报文ACK=1，ack=x+1，同时也发送请求报文，SYN=1，seq=y。</li>
+<li>第三次握手。Client收到x确认报文，发送y确认报文ACK=1，ack=y+1。建立连接完成。</li>
+</ul>
+<p>这样看有点懵，解释一下其中几个点（wxc个人总结，不一定对）。</p>
+<ol>
+<li>x,y代表啥，有啥作用？</li>
+</ol>
+<p>x,y其实就是标识某次请求的作用，比如Client向Server发送的请求，将seq设置为x，Server在返回确认报文的时候将ack设置为x+1,代表是对x请求的确认。</p>
+<ol start="2">
+<li>为啥一定要3次握手，多一次少一次不行吗？</li>
+</ol>
+<p>不行，首先TCP是可靠的面向连接的协议，所以必须保证Client和Server都发送接收正常才可以建立协议，三次握手确定的过程如下：</p>
+<p>第一次握手。Client发送请求报文，自己啥都不能确定，也不知道有没有发出去。Server接收到报文，那Server就知道自己接收是正常的，Client发送也是正常的。</p>
+<p>第二次握手。Client收到了确认报文，那就知道自己发送接收都是正常的，也知道Server发送接收也是正常的。</p>
+<p>第三次握手。Server收到了确认报文，这下全搞清楚了，自己发送接收都正常，Client发送接收也正常。</p>
+<p><strong>断开连接的四次挥手</strong></p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019/7/TCP%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png" alt="TCP四次挥手"></p>
+<p>理解了三次握手，那四次挥手也容易理解了</p>
+<ul>
+<li>客户端-发送一个 FIN，用来关闭客户端到服务器的数据传送</li>
+<li>服务器-收到这个 FIN，它发回一 个 ACK，确认序号为收到的序号加1 。和 SYN 一样，一个 FIN 将占用一个序号。</li>
+<li>服务器-关闭与客户端的连接，发送一个FIN给客户端</li>
+<li>客户端-发回 ACK 报文确认，并将确认序号设置为收到序号加1</li>
+</ul>
+<blockquote>
+<p>举个例子：A 和 B 打电话，通话即将结束后，A 说“我没啥要说的了”，B回答“我知道了”，但是 B 可能还会有要说的话，A 不能要求 B 跟着自己的节奏结束通话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，这样通话才算结束。</p>
+</blockquote>
+<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>请求报文的组成</p>
+<ul>
+<li><p>请求行。请求行由请求方法字段、URL字段和HTTP协议版本字段3个字段组成，它们用空格分隔。请求方法有8种，最常用的就是GET和POST了，还有PUT、HEAD、DELETE、TRACE、CONNECT、OPTION。如请求百度：<code>GET http://www.baidu.com HTTP/1.1</code></p>
+</li>
+<li><p>请求头部。关键字/值对组成，每行一对，关键字和值用英文冒号“:”分隔，请求头部通知服务器有关于客户端请求的信息，典型的请求头有：</p>
+<p>  User-Agent：产生请求的浏览器类型。</p>
+<p>  Accept：客户端可识别的内容类型列表。</p>
+<p>  Host：请求的主机名，允许多个域名同处一个IP地址，即虚拟主机。</p>
+<p>  如请求百度：</p>
+<p>  <code>User-Agent:Fiddler Everywhere   Host:www.baidu.com   Content-Type:text/plain</code></p>
+</li>
+<li><p>空行。发送回车符和换行符，通知服务器以下不再有请求头</p>
+</li>
+<li><p>请求数据。GET方法没有数据，POST有。与请求数据相关的最常使用的请求头是Content-Type和Content-Length。如</p>
+<p>  <code>Content-Type:text/plain   Content-Length:0</code></p>
+</li>
+</ul>
+<p>响应报文的组成</p>
+<ul>
+<li>状态行。在响应中唯一真正的区别在于第一行中用状态信息代替了请求信息。状态行（status line）通过提供一个状态码来说明所请求的资源情况。格式为HTTP-Version Status-Code Reason-Phrase CRLF，如GET百度的结果<code>HTTP/1.1 200 OK</code></li>
+<li>消息报头。这个格式和请求头部是一样的，内容也有通用的部分。</li>
+<li>空行。发送回车符和换行符，通知客户端以下不再有响应头</li>
+<li>响应正文。这个就没啥可说的了，网页就是返回的html代码。</li>
+</ul>
+<p>关于状态码：</p>
+<p>状态代码由三位数字组成，第一个数字定义了响应的类别，且有五种可能取值。</p>
+<ul>
+<li>1xx：指示信息–表示请求已接收，继续处理。</li>
+<li>2xx：成功–表示请求已被成功接收、理解、接受。</li>
+<li>3xx：重定向–要完成请求必须进行更进一步的操作。</li>
+<li>4xx：客户端错误–请求有语法错误或请求无法实现。</li>
+<li>5xx：服务器端错误–服务器未能实现合法的请求。</li>
+</ul>
+<p>常见状态代码、状态描述的说明如下。</p>
+<ul>
+<li>200 OK：客户端请求成功。</li>
+<li>400 Bad Request：客户端请求有语法错误，不能被服务器所理解。</li>
+<li>401 Unauthorized：请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用。</li>
+<li>403 Forbidden：服务器收到请求，但是拒绝提供服务。</li>
+<li>404 Not Found：请求资源不存在，举个例子：输入了错误的URL。</li>
+<li>500 Internal Server Error：服务器发生不可预期的错误。</li>
+<li>503 Server Unavailable：服务器当前不能处理客户端的请求，一段时间后可能恢复正常，举个例子：HTTP/1.1 200 OK（CRLF）。</li>
+</ul>
+<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>套接字。首先Socket不是一种协议，而是一个编程调用接口（API），属于传输层（主要解决数据如何在网络中传输），而HTTP是应用层协议。Socket是基于TCP/UDP协议的，自然也就有两种Socket对应（流套接字、数据报套接字），其中流套接字用的比较多。</p>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 步骤1：创建客户端 &amp; 服务器的连接</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建Socket对象 &amp; 指定服务端的IP及端口号 </span></span><br><span class="line">Socket socket = <span class="keyword">new</span> Socket(<span class="string">&quot;192.168.1.32&quot;</span>, <span class="number">1989</span>);  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断客户端和服务器是否连接成功  </span></span><br><span class="line">socket.isConnected());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 步骤2：客户端 &amp; 服务器 通信</span></span><br><span class="line"><span class="comment">// 通信包括：客户端 接收服务器的数据 &amp; 发送数据 到 服务器</span></span><br><span class="line"></span><br><span class="line">&lt;-- 操作<span class="number">1</span>：接收服务器的数据 --&gt;</span><br><span class="line"><span class="comment">// 步骤1：创建输入流对象InputStream</span></span><br><span class="line">InputStream is = socket.getInputStream() </span><br><span class="line"></span><br><span class="line"><span class="comment">// 步骤2：创建输入流读取器对象 并传入输入流对象</span></span><br><span class="line"><span class="comment">// 该对象作用：获取服务器返回的数据</span></span><br><span class="line">InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(is);</span><br><span class="line">BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 步骤3：断开客户端 &amp; 服务器 连接</span></span><br><span class="line"></span><br><span class="line">os.close();</span><br><span class="line"><span class="comment">// 断开 客户端发送到服务器 的连接，即关闭输出流对象OutputStream</span></span><br><span class="line"></span><br><span class="line">br.close();</span><br><span class="line"><span class="comment">// 断开 服务器发送到客户端 的连接，即关闭输入流读取器对象BufferedReader</span></span><br><span class="line"></span><br><span class="line">socket.close();</span><br><span class="line"><span class="comment">// 最终关闭整个Socket连接</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="网络框架"><a href="#网络框架" class="headerlink" title="网络框架"></a>网络框架</h2><h3 id="HttpClient"><a href="#HttpClient" class="headerlink" title="HttpClient"></a>HttpClient</h3><p>比较老的框架了，在安卓2.3之后推荐使用HttpURLConnection，在安卓6.0之后被移除出安卓SDK。</p>
+<p>用法和HttpURLConnection有点相似，这里就不再研究了，毕竟用得太少了。</p>
+<h3 id="HttpURLConnection"><a href="#HttpURLConnection" class="headerlink" title="HttpURLConnection"></a>HttpURLConnection</h3><p>要用输入输出流，最烦这东西了。而且这里面输入，比如post的参数，要用getOutPutStream()，而输出，比如返回的数据，要用getInPutStream()。我直接迷惑？？？</p>
+<p>直接看一个GET的例子吧，POST还要处理参数，太麻烦了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 测试HttpURLConnection</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> url 请求的连接</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">testHttpURLConnection</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">    HttpURLConnection httpURLConnection = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;testHttpURLConnection: &quot;</span> + url);</span><br><span class="line">        <span class="comment">// 初始化</span></span><br><span class="line">        httpURLConnection = (HttpURLConnection) <span class="keyword">new</span> URL(url).openConnection();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;testHttpURLConnection: &quot;</span> + httpURLConnection);</span><br><span class="line">        <span class="comment">// 设置连接超时的时间</span></span><br><span class="line">        httpURLConnection.setConnectTimeout(<span class="number">15000</span>);</span><br><span class="line">        <span class="comment">// 设置读取超时的时间</span></span><br><span class="line">        httpURLConnection.setReadTimeout(<span class="number">15000</span>);</span><br><span class="line">        <span class="comment">// 设置请求参数</span></span><br><span class="line">        httpURLConnection.setRequestMethod(<span class="string">&quot;GET&quot;</span>);</span><br><span class="line">        <span class="comment">// 添加header</span></span><br><span class="line">        httpURLConnection.setRequestProperty(<span class="string">&quot;Connection&quot;</span>, <span class="string">&quot;Keep-Alive&quot;</span>);</span><br><span class="line">        <span class="comment">// 接收输入流</span></span><br><span class="line">        httpURLConnection.setDoInput(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 传递参数时需要开启</span></span><br><span class="line">        httpURLConnection.setDoOutput(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 建立连接</span></span><br><span class="line">        httpURLConnection.connect();</span><br><span class="line">        <span class="comment">// 获取返回结果</span></span><br><span class="line">        InputStream inputStream = httpURLConnection.getInputStream();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;testHttpURLConnection: &quot;</span> + inputStream);</span><br><span class="line">        <span class="keyword">byte</span>[] data=<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        StringBuffer stringBuffer=<span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">while</span> (inputStream.read(data)!=-<span class="number">1</span>)&#123;</span><br><span class="line">            String s=<span class="keyword">new</span> String(data, Charset.forName(<span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">            stringBuffer.append(s);</span><br><span class="line">        &#125;</span><br><span class="line">        String message=stringBuffer.toString();</span><br><span class="line">        inputStream.close();</span><br><span class="line">        httpURLConnection.disconnect();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;testHttpURLConnection: &quot;</span> + message);</span><br><span class="line">    	&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="OkHttp"><a href="#OkHttp" class="headerlink" title="OkHttp"></a>OkHttp</h3><p> 官网：<a target="_blank" rel="noopener" href="https://square.github.io/okhttp/">OkHttp (square.github.io)</a></p>
+<p>先看使用例子，非常的简单。其它使用的，比如POST请求，可以直接看官网。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* OkHttp的简单例子</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> url 请求的网址</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">testOkHttp</span><span class="params">(String url)</span></span>&#123;</span><br><span class="line">    OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line">    Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">        .url(url)</span><br><span class="line">        .method(<span class="string">&quot;GET&quot;</span>, <span class="keyword">null</span>)</span><br><span class="line">        .build();</span><br><span class="line">    <span class="comment">//同步请求和处理</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Response response = client.newCall(request).execute();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;testOkHttp: &quot;</span> + response.body().string());</span><br><span class="line">    &#125;<span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//        // 异步请求和处理</span></span><br><span class="line">    <span class="comment">//        Call call = client.newCall(request);</span></span><br><span class="line">    <span class="comment">//        call.enqueue(new Callback() &#123;</span></span><br><span class="line">    <span class="comment">//            @Override</span></span><br><span class="line">    <span class="comment">//            public void onFailure(@NotNull Call call, @NotNull IOException e) &#123;</span></span><br><span class="line">    <span class="comment">//                Log.d(TAG, &quot;onFailure: &quot; + e);</span></span><br><span class="line">    <span class="comment">//            &#125;</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">//            @Override</span></span><br><span class="line">    <span class="comment">//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException &#123;</span></span><br><span class="line">    <span class="comment">//                Log.d(TAG, &quot;onResponse: &quot; + response.body().string());</span></span><br><span class="line">    <span class="comment">//            &#125;</span></span><br><span class="line">    <span class="comment">//        &#125;);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>源码解析看下面这篇，嗯，虽然我没怎么看懂。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/104813091">OkHttp 源码分析 - 知乎 (zhihu.com)</a></p>
+<h3 id="Retrofit"><a href="#Retrofit" class="headerlink" title="Retrofit"></a>Retrofit</h3><p>Retrofit的一大特点就是使用注解来实现功能，先来了解一下注解：</p>
+<ul>
+<li>Http请求方法注解。如GET、POST，总共8种，<code>HTTP</code>, <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>, <code>OPTIONS</code> and <code>HEAD</code>。</li>
+<li>标记注解。FormUrlEncded（数据流形式返回）、Multipart、Streaming。</li>
+<li>参数注解。常用的有<code>Header</code>、<code>Body</code>,<code>Path</code>。后面再慢慢介绍吧</li>
+</ul>
+<p><strong>动态配置URL地址：<code>@Path</code></strong></p>
+<p>传入path参数来动态配置URL。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AppService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GET(&quot;&#123;path&#125;/app.json&quot;)</span></span><br><span class="line">    Call&lt;List&lt;App&gt;&gt; getAppData(<span class="meta">@Path(&quot;path&quot;)</span> String path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>指定查询条件：<code>@Query</code></strong></p>
+<p>GET后接查询条件可以使用此参数，会被解析成？加参数的形式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPService</span></span>&#123;</span><br><span class="line">    <span class="meta">@GET(&quot;app.json&quot;)</span></span><br><span class="line">    Call&lt;List&lt;App&gt;&gt; getAppData();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>消息报头：<code>@Headers</code>,<code>@Header</code></strong></p>
+<p>添加请求头，静态添加用<code>Headers</code>，动态添加用<code>Header</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPService</span></span>&#123;</span><br><span class="line">    <span class="meta">@GET(&quot;app.json&quot;)</span></span><br><span class="line">    <span class="meta">@Headers(&quot;Accept-Encoding:application/json&quot;)</span></span><br><span class="line">    Call&lt;List&lt;App&gt;&gt; getAppData();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APPService</span></span>&#123;</span><br><span class="line">    <span class="meta">@GET(&quot;app.json&quot;)</span></span><br><span class="line">    Call&lt;List&lt;App&gt;&gt; getAppData(<span class="meta">@Header(&quot;Location&quot;)</span> String location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>POST数据类型：<code>@Field</code>,<code>@Body</code></strong></p>
+<p>传输数据类型为键值对用field，json类型用body。</p>
+<h2 id="WebView"><a href="#WebView" class="headerlink" title="WebView"></a>WebView</h2><p><strong>使用场景</strong></p>
+<p>如果您希望在客户端应用中提供 Web 应用（或只是网页），则可以使用 <code>WebView</code> 执行该操作。</p>
+<p>使用 <code>WebView</code> 非常有用的一种常见情形是，您希望在应用中提供可能需要更新的信息，例如最终用户协议或用户指南。在 Android 应用中，您可以创建一个包含 <code>WebView</code> 的 <code>Activity</code>，然后使用它来显示在线托管的文档。</p>
+<p>另一种 <code>WebView</code> 可能会有所帮助的情形是，如果您的应用向用户提供始终需要互联网连接才能检索数据的数据（例如电子邮件）。在这种情况下，您可能会发现相比于执行网络请求，然后解析数据并在 Android 布局中呈现数据，在 Android 应用中编译 <code>WebView</code> 以显示包含所有用户数据的网页更加轻松</p>
+<p><strong>简单使用</strong></p>
+<p>在XML布局中直接添加<code>WebView</code>控件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">WebView</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:id</span>=<span class="string">&quot;@+id/webview&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WebView myWebView = (WebView) findViewById(R.id.webview);</span><br><span class="line">myWebView.loadUrl(<span class="string">&quot;http://www.example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以直接解析HTML代码来构建网页，不过并不常用，而且有所限制。</p>
+<p><strong>启用JavaScript</strong></p>
+<p>默认为关闭状态，开启方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WebView myWebView = (WebView) findViewById(R.id.webview);</span><br><span class="line">WebSettings webSettings = myWebView.getSettings();</span><br><span class="line">webSettings.setJavaScriptEnabled(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>WebSettings</code> 不止用来开启JavaScript，还提供对其他各种实用设置的访问权限。</p>
+<p>在使用js之前，应该考虑到这有可能把安卓APP暴露给web端，如果不能确定自己访问的WebView是否安全或者是否必须，就不应该开启。</p>
+<p>可以在android代码和JavaScript代码之间构造接口，使js可以调用android的原生代码。</p>
+<p>在该接口中定义了一个showToast方法供JS调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebAppInterface</span> </span>&#123;</span><br><span class="line">     Context mContext;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/** Instantiate the interface and set the context */</span></span><br><span class="line">     WebAppInterface(Context c) &#123;</span><br><span class="line">         mContext = c;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/** Show a toast from the web page */</span></span><br><span class="line">     <span class="meta">@JavascriptInterface</span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showToast</span><span class="params">(String toast)</span> </span>&#123;</span><br><span class="line">         Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将接口绑定到WebView上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webView.addJavascriptInterface(<span class="keyword">new</span> WebAppInterface(<span class="keyword">this</span>), <span class="string">&quot;Android&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在JS中调用，下面展示了一个点击按钮使用Android toast的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=<span class="string">&quot;button&quot;</span> value=<span class="string">&quot;Say hello&quot;</span> onClick=<span class="string">&quot;showAndroidToast(&#x27;Hello Android!&#x27;)&quot;</span> /&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">	<span class="function"><span class="keyword">function</span> <span class="title">showAndroidToast</span>(<span class="params">toast</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    Android.showToast(toast);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>处理网页导航</strong></p>
+<p>当用户在 <code>WebView</code> 中点击网页中的链接时，Android 的默认行为是启动处理网址的应用。默认网络浏览器通常会打开并加载目标网址。不过，您可以为 <code>WebView</code> 替换此行为，以便在 <code>WebView</code> 内打开链接。</p>
+<p>允许用户在WebView中打开链接</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WebView myWebView = (WebView) findViewById(R.id.webview);</span><br><span class="line">myWebView.setWebViewClient(MyWebViewClient);</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以自定义WebViewClient来处理链接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebViewClient</span> <span class="keyword">extends</span> <span class="title">WebViewClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;www.example.com&quot;</span>.equals(Uri.parse(url).getHost())) &#123;</span><br><span class="line">            <span class="comment">// This is my website, so do not override; let my WebView load the page</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs</span></span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW, Uri.parse(url));</span><br><span class="line">        startActivity(intent);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若设置了WebViewClient，WebView会维护用户浏览的历史记录。使用WebView#goBack()和WebView#goForward()来浏览历史链接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onKeyDown</span><span class="params">(<span class="keyword">int</span> keyCode, KeyEvent event)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Check if the key event was the Back button and if there&#x27;s history</span></span><br><span class="line">    <span class="keyword">if</span> ((keyCode == KeyEvent.KEYCODE_BACK) &amp;&amp; myWebView.canGoBack()) &#123;</span><br><span class="line">        myWebView.goBack();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// If it wasn&#x27;t the Back key or there&#x27;s no web page history, bubble up to the default</span></span><br><span class="line">    <span class="comment">// system behavior (probably exit the activity)</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onKeyDown(keyCode, event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>其它</strong></p>
+<p>不同软件可能选择使用不同的WebView软件包，就像微信中链接打开的WebView就是使用腾讯自己的:angry:。<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/androidx/webkit/package-summary">AndroidX webkit 库</a>包含 <code>getCurrentWebViewPackage()</code> 方法，用于获取与在应用中显示网页内容的软件包相关的信息。</p>
+<p>谷歌安全浏览，<code>EnableSafeBrowsing</code> ，默认为true，如果不需要可以关掉 ，单个关闭：<code>setSafeBrowsingEnabled()</code>，全部关闭可以在清单文件下的<code>&lt;mete-data&gt;</code>中设置</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/21/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/01/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wxc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

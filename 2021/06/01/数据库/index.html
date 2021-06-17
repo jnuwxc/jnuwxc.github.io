@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;jnuwxc.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数据库SQL语法教程：SQL 教程 | 菜鸟教程 (runoob.com) or SQL 教程 (w3school.com.cn)，看一个就行 概念基础练习：SQL 测验 (w3school.com.cn) 有点怪的练习：Database - 力扣（LeetCode） (leetcode-cn.com)，会有一些稀奇古怪的语法，有的没啥意义 SQLite数据库SQLite内置在安卓系统内，支持标准">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wxc的博客">
+<meta property="og:url" content="http://jnuwxc.github.io/2021/06/01/%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
+<meta property="og:site_name" content="wxc的博客">
+<meta property="og:description" content="数据库SQL语法教程：SQL 教程 | 菜鸟教程 (runoob.com) or SQL 教程 (w3school.com.cn)，看一个就行 概念基础练习：SQL 测验 (w3school.com.cn) 有点怪的练习：Database - 力扣（LeetCode） (leetcode-cn.com)，会有一些稀奇古怪的语法，有的没啥意义 SQLite数据库SQLite内置在安卓系统内，支持标准">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-01T03:25:45.477Z">
+<meta property="article:modified_time" content="2021-06-01T07:34:37.524Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="Android, 安卓, android">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://jnuwxc.github.io/2021/06/01/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;jnuwxc.github.io&#x2F;2021&#x2F;06&#x2F;01&#x2F;%E6%95%B0%E6%8D%AE%E5%BA%93&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;01&#x2F;数据库&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title> | wxc的博客</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wxc的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E8%AF%AD%E6%B3%95"><span class="nav-number">1.0.1.</span> <span class="nav-text">SQL语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQLite%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.0.2.</span> <span class="nav-text">SQLite数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">读取数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE"><span class="nav-number">1.0.3.</span> <span class="nav-text">删除数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">更新数据库</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wxc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jnuwxc.github.io/2021/06/01/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wxc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wxc的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-06-01 11:25:45 / 修改时间：15:34:37" itemprop="dateCreated datePublished" datetime="2021-06-01T11:25:45+08:00">2021-06-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h3 id="SQL语法"><a href="#SQL语法" class="headerlink" title="SQL语法"></a>SQL语法</h3><p>教程：<a target="_blank" rel="noopener" href="https://www.runoob.com/sql/sql-tutorial.html">SQL 教程 | 菜鸟教程 (runoob.com)</a> or <a target="_blank" rel="noopener" href="https://www.w3school.com.cn/sql/index.asp">SQL 教程 (w3school.com.cn)</a>，看一个就行</p>
+<p>概念基础练习：<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/quiz/quiz.asp?quiz=sql">SQL 测验 (w3school.com.cn)</a></p>
+<p>有点怪的练习：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problemset/database/">Database - 力扣（LeetCode） (leetcode-cn.com)</a>，会有一些稀奇古怪的语法，有的没啥意义</p>
+<h3 id="SQLite数据库"><a href="#SQLite数据库" class="headerlink" title="SQLite数据库"></a>SQLite数据库</h3><p>SQLite内置在安卓系统内，支持标准的SQL语法和事务，API功能强大。当然，现在更推荐使用ROOM来管理数据库，SQLite相对来说比较底层，操作起来还是不太方便，而且容易产生许多样板代码。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/data-storage/sqlite?hl=zh_cn#DbHelper">使用 SQLite 保存数据  | Android 开发者  | Android Developers (google.cn)</a></p>
+<h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><p>创建一个子类继承自SQLiteOpenHelper，实现其构造方法和<code>onCreate()</code>,<code>onUpgrade()</code>回调方法。下面展示了一个示例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FeedReaderDbHelper</span> <span class="keyword">extends</span> <span class="title">SQLiteOpenHelper</span> </span>&#123;</span><br><span class="line">    <span class="comment">// If you change the database schema, you must increment the database version.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DATABASE_VERSION = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATABASE_NAME = <span class="string">&quot;FeedReader.db&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeedReaderDbHelper</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, DATABASE_NAME, <span class="keyword">null</span>, DATABASE_VERSION);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(SQLiteDatabase db)</span> </span>&#123;</span><br><span class="line">        db.execSQL(SQL_CREATE_ENTRIES);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onUpgrade</span><span class="params">(SQLiteDatabase db, <span class="keyword">int</span> oldVersion, <span class="keyword">int</span> newVersion)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This database is only a cache for online data, so its upgrade policy is</span></span><br><span class="line">        <span class="comment">// to simply to discard the data and start over</span></span><br><span class="line">        db.execSQL(SQL_DELETE_ENTRIES);</span><br><span class="line">        onCreate(db);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在需要的地方实例化该类，然后使用<code>getWritableDatabase()</code>或者<code>getReadableDatabase()</code>方法获取SQLiteDatabase的实例，对数据库进行操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FeedReaderDbHelper dbHelper = <span class="keyword">new</span> FeedReaderDbHelper(getContext());</span><br><span class="line"><span class="comment">// Gets the data repository in write mode</span></span><br><span class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</span><br></pre></td></tr></table></figure>
+
+<h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><p>使用SQLiteDatabase的insert()方法，<code>insert()</code> 的第一个参数就只是表名。第二个参数将指示框架在 <code>ContentValues</code> 为空（即您没有 <code>put</code> 任何值）时应执行哪些操作。如果您指定列名称，框架会插入一行，并将该列的值设置为 null。如果您指定 <code>null</code>（如此代码示例所示），框架在没有值时不会插入行。第三个就是要插入的值，使用ContentValues构建</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create a new map of values, where column names are the keys</span></span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_TITLE, title);</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_SUBTITLE, subtitle);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert the new row, returning the primary key value of the new row</span></span><br><span class="line"><span class="keyword">long</span> newRowId = db.insert(FeedEntry.TABLE_NAME, <span class="keyword">null</span>, values);</span><br></pre></td></tr></table></figure>
+
+<h4 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h4><blockquote>
+<p>如需从数据库中读取信息，请使用 <code>query()</code> 方法，向其传递您的选择条件和所需的列。查询结果会包含在 <code>Cursor</code> 对象中返回给您。</p>
+</blockquote>
+<p>这个还不如我自己写SQL语句呢，query()方法7个参数。。。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Cursor cursor = db.query(</span><br><span class="line">    FeedEntry.TABLE_NAME,   <span class="comment">// The table to query</span></span><br><span class="line">    projection,             <span class="comment">// The array of columns to return (pass null to get all)</span></span><br><span class="line">    selection,              <span class="comment">// The columns for the WHERE clause</span></span><br><span class="line">    selectionArgs,          <span class="comment">// The values for the WHERE clause</span></span><br><span class="line">    <span class="keyword">null</span>,                   <span class="comment">// don&#x27;t group the rows</span></span><br><span class="line">    <span class="keyword">null</span>,                   <span class="comment">// don&#x27;t filter by row groups</span></span><br><span class="line">    sortOrder               <span class="comment">// The sort order</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><p>和插入数据很像，少一个插入参数。第一个参数是表名，第二第三用来约束删除条件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Define &#x27;where&#x27; part of query.</span></span><br><span class="line">String selection = FeedEntry.COLUMN_NAME_TITLE + <span class="string">&quot; LIKE ?&quot;</span>;</span><br><span class="line"><span class="comment">// Specify arguments in placeholder order.</span></span><br><span class="line">String[] selectionArgs = &#123; <span class="string">&quot;MyTitle&quot;</span> &#125;;</span><br><span class="line"><span class="comment">// Issue SQL statement.</span></span><br><span class="line"><span class="keyword">int</span> deletedRows = db.delete(FeedEntry.TABLE_NAME, selection, selectionArgs);</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h4><p>如果您需要修改数据库值的子集，请使用 <code>update()</code> 方法。</p>
+<p>更新表可将 <code>insert()</code> 的 <code>ContentValues</code> 语法与 <code>delete()</code> 的 <code>WHERE</code> 语法相结合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// New value for one column</span></span><br><span class="line">String title = <span class="string">&quot;MyNewTitle&quot;</span>;</span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_TITLE, title);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Which row to update, based on the title</span></span><br><span class="line">String selection = FeedEntry.COLUMN_NAME_TITLE + <span class="string">&quot; LIKE ?&quot;</span>;</span><br><span class="line">String[] selectionArgs = &#123; <span class="string">&quot;MyOldTitle&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = db.update(</span><br><span class="line">    FeedReaderDbHelper.FeedEntry.TABLE_NAME,</span><br><span class="line">    values,</span><br><span class="line">    selection,</span><br><span class="line">    selectionArgs);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/26/%E7%BD%91%E7%BB%9C/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/17/EventBus/" rel="next" title="EventBus">
+                  EventBus <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wxc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

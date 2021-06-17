@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;jnuwxc.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="多线程[TOC] 线程基础线程的状态新建（NEW） 创建后尚未启动。 可运行（RUNABLE） 正在 Java 虚拟机中运行。但是在操作系统层面，它可能处于运行状态，也可能等待资源调度（例如处理器资源），资源调度完成就进入运行状态。所以该状态的可运行是指可以被运行，具体有没有运行要看底层操作系统的资源调度。 阻塞（BLOCKED） 请求获取 monitor lock 从而进入 synchroniz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wxc的博客">
+<meta property="og:url" content="http://jnuwxc.github.io/2021/05/21/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="wxc的博客">
+<meta property="og:description" content="多线程[TOC] 线程基础线程的状态新建（NEW） 创建后尚未启动。 可运行（RUNABLE） 正在 Java 虚拟机中运行。但是在操作系统层面，它可能处于运行状态，也可能等待资源调度（例如处理器资源），资源调度完成就进入运行状态。所以该状态的可运行是指可以被运行，具体有没有运行要看底层操作系统的资源调度。 阻塞（BLOCKED） 请求获取 monitor lock 从而进入 synchroniz">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java+%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png">
+<meta property="og:image" content="https://snailclimb.gitee.io/javaguide/docs/java/multi-thread/images/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/%E5%9B%BE%E8%A7%A3%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.png">
+<meta property="article:published_time" content="2021-05-21T03:59:19.432Z">
+<meta property="article:modified_time" content="2021-05-25T06:29:57.835Z">
+<meta property="article:author" content="wxc">
+<meta property="article:tag" content="Android, 安卓, android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java+%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png">
+
+
+<link rel="canonical" href="http://jnuwxc.github.io/2021/05/21/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;jnuwxc.github.io&#x2F;2021&#x2F;05&#x2F;21&#x2F;%E5%A4%9A%E7%BA%BF%E7%A8%8B&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;21&#x2F;多线程&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title> | wxc的博客</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wxc的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">线程基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%96%AD"><span class="nav-number">1.1.3.</span> <span class="nav-text">线程中断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="nav-number">1.2.</span> <span class="nav-text">线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">1.2.1.</span> <span class="nav-text">ReentrantLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Synchroized"><span class="nav-number">1.2.2.</span> <span class="nav-text">Synchroized</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volatile"><span class="nav-number">1.2.3.</span> <span class="nav-text">Volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E9%94%81%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.4.</span> <span class="nav-text">同步锁的一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81%E4%B8%8E%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">可重入锁与不可重入锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">乐观锁和悲观锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%B9%B3%E9%94%81%E5%92%8C%E9%9D%9E%E5%85%AC%E5%B9%B3%E9%94%81"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">公平锁和非公平锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="nav-number">1.3.</span> <span class="nav-text">阻塞队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number">1.4.</span> <span class="nav-text">线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%8D%93%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-number">1.5.</span> <span class="nav-text">安卓线程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler"><span class="nav-number">1.5.1.</span> <span class="nav-text">Handler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask"><span class="nav-number">1.5.2.</span> <span class="nav-text">AsyncTask</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wxc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://jnuwxc.github.io/2021/05/21/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wxc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wxc的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-21 11:59:19" itemprop="dateCreated datePublished" datetime="2021-05-21T11:59:19+08:00">2021-05-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-25 14:29:57" itemprop="dateModified" datetime="2021-05-25T14:29:57+08:00">2021-05-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>[TOC]</p>
+<h2 id="线程基础"><a href="#线程基础" class="headerlink" title="线程基础"></a>线程基础</h2><h3 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h3><p><strong>新建（NEW）</strong></p>
+<p>创建后尚未启动。</p>
+<p><strong>可运行（RUNABLE）</strong></p>
+<p>正在 Java 虚拟机中运行。但是在操作系统层面，它可能处于运行状态，也可能等待资源调度（例如处理器资源），资源调度完成就进入运行状态。所以该状态的可运行是指可以被运行，具体有没有运行要看底层操作系统的资源调度。</p>
+<p><strong>阻塞（BLOCKED）</strong></p>
+<p>请求获取 monitor lock 从而进入 synchronized 函数或者代码块，但是其它线程已经占用了该 monitor lock，所以出于阻塞状态。要结束该状态进入从而 RUNABLE 需要其他线程释放 monitor lock。</p>
+<p><strong>无限期等待（WAITING）</strong></p>
+<p>等待其它线程显式地唤醒。</p>
+<p>阻塞和等待的区别在于，阻塞是被动的，它是在等待获取 monitor lock。而等待是主动的，通过调用 Object.wait() 等方法进入。</p>
+<table>
+<thead>
+<tr>
+<th>进入方法</th>
+<th>退出方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>没有设置 Timeout 参数的 Object.wait() 方法</td>
+<td>Object.notify() / Object.notifyAll()</td>
+</tr>
+<tr>
+<td>没有设置 Timeout 参数的 Thread.join() 方法</td>
+<td>被调用的线程执行完毕</td>
+</tr>
+<tr>
+<td>LockSupport.park() 方法</td>
+<td>LockSupport.unpark(Thread)</td>
+</tr>
+</tbody></table>
+<p><strong>限期等待（TIMED_WAITING）</strong></p>
+<p>无需等待其它线程显式地唤醒，在一定时间之后会被系统自动唤醒。</p>
+<table>
+<thead>
+<tr>
+<th>进入方法</th>
+<th>退出方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Thread.sleep() 方法</td>
+<td>时间结束</td>
+</tr>
+<tr>
+<td>设置了 Timeout 参数的 Object.wait() 方法</td>
+<td>时间结束 / Object.notify() / Object.notifyAll()</td>
+</tr>
+<tr>
+<td>设置了 Timeout 参数的 Thread.join() 方法</td>
+<td>时间结束 / 被调用的线程执行完毕</td>
+</tr>
+<tr>
+<td>LockSupport.parkNanos() 方法</td>
+<td>LockSupport.unpark(Thread)</td>
+</tr>
+<tr>
+<td>LockSupport.parkUntil() 方法</td>
+<td>LockSupport.unpark(Thread)</td>
+</tr>
+</tbody></table>
+<p>调用 Thread.sleep() 方法使线程进入限期等待状态时，常常用“使一个线程睡眠”进行描述。调用 Object.wait() 方法使线程进入限期等待或者无限期等待时，常常用“挂起一个线程”进行描述。睡眠和挂起是用来描述行为，而阻塞和等待用来描述状态。</p>
+<p><strong>死亡（TERMINATED）</strong></p>
+<p>可以是线程结束任务之后自己结束，或者产生了异常而结束。</p>
+<p>下图展示了线程的状态变化图</p>
+<p><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/19-1-29/Java+%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java 线程状态变迁 "></p>
+<h3 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h3><p>推荐使用第二种方法。</p>
+<ul>
+<li>继承Tread类，重写run方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;TestThread class run, thread id: &quot;</span> + Thread.currentThread());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Thread thread = <span class="keyword">new</span> TestThread();</span><br><span class="line">thread.start();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实现Runnable接口，实现run方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;TestThread class run, thread id: &quot;</span> + Thread.currentThread());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">TestRunnable testRunnable = <span class="keyword">new</span> TestRunnable();</span><br><span class="line">Thread thread1 = <span class="keyword">new</span> Thread(testRunnable);</span><br><span class="line">thread1.start();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实现Callable接口，重写call方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyTestCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;MyTestCallable, thread id :&quot;</span> + Thread.currentThread().toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">MyTestCallable myTestCallable = <span class="keyword">new</span> MyTestCallable();</span><br><span class="line">ExecutorService executorService = Executors.newSingleThreadExecutor();</span><br><span class="line">Future future = executorService.submit(myTestCallable);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Log.d(TAG, <span class="string">&quot;onCreate: &quot;</span> + future.get());</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h3><p>在线程中有一个中断标志位，用来表示是否中断。线程中断的三个相关方法也是对这个标志位来进行操作的。</p>
+<p><code>Thread.interrupt()</code>线程调用该方法，表示中断该线程，将标志位置为true，但是调用该方法的线程不一定会终止，这要取决于线程具体的实现。对一个阻塞状态的线程使用该方法会触发<code>InterruptedException</code>。</p>
+<p><code>Thread.isInterrupted()</code>判断调用线程是否中断，判断方法是读取标志位。</p>
+<p><code>Thread.interrupted()</code>和上一个效果一样，但是读取标志位之后对标志位进行复位。如对已经调用过interrupt的线程使用该方法，会出现一次true，一次false。注意该方法是对当前线程进行操作，而不是调用该方法的线程。。。</p>
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><h3 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h3><p>ReentrantLock 是 java.util.concurrent（J.U.C）包中的锁。它是支持可重入(后面有解释)的锁，支持公平锁和非公平锁（后面有解释），默认为非公平。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span>&#123;</span><br><span class="line">    lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是在使用时一般会结合条件变量进行使用，下面是一个转账的加锁示例：</p>
+<p>代码中创建了条件变量<code>condition</code>，在转出的钱不够时，变阻塞当前线程，但是会放弃锁，这样转进来的钱就可以成功转入，转入成功再通知所有的阻塞线程，检查是否已经满足条件。若不使用条件变量，钱不够，线程阻塞也不放弃锁，那转钱也转不进来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Alipay</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">double</span>[] accounts;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Lock lock;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition condition;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Alipay</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">double</span> money)</span> </span>&#123;</span><br><span class="line">        accounts = <span class="keyword">new</span> <span class="keyword">double</span>[n];</span><br><span class="line">        lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">        condition = lock.newCondition();</span><br><span class="line">        Arrays.fill(accounts, money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transfer</span><span class="params">(<span class="keyword">int</span> from, <span class="keyword">int</span> to, <span class="keyword">int</span> amount)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (accounts[from] &lt; amount) &#123;</span><br><span class="line">                <span class="comment">// 钱不够，阻塞当前线程，并放弃锁</span></span><br><span class="line">                condition.await();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 转账</span></span><br><span class="line">            accounts[from] = accounts[from] - amount;</span><br><span class="line">            accounts[to] = accounts[to] + amount;</span><br><span class="line">            condition.signalAll();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Synchroized"><a href="#Synchroized" class="headerlink" title="Synchroized"></a>Synchroized</h3><p>synchronized 关键字最主要的三种使用方式：</p>
+<p><strong>1.修饰实例方法:</strong> 作用于当前对象实例加锁，进入同步代码前要获得 <strong>当前对象实例的锁</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">//业务代码</span></span><br><span class="line">&#125;Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.修饰静态方法:</strong> 也就是给当前类加锁，会作用于类的所有对象实例 ，进入同步代码前要获得 <strong>当前 class 的锁</strong>。因为静态成员不属于任何一个实例对象，是类成员（ _static 表明这是该类的一个静态资源，不管 new 了多少个对象，只有一份_）。所以，如果一个线程 A 调用一个实例对象的非静态 <code>synchronized</code> 方法，而线程 B 需要调用这个实例对象所属类的静态 <code>synchronized</code> 方法，是允许的，不会发生互斥现象，<strong>因为访问静态 <code>synchronized</code> 方法占用的锁是当前类的锁，而访问非静态 <code>synchronized</code> 方法占用的锁是当前实例对象锁</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//业务代码</span></span><br><span class="line">&#125;Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.修饰代码块</strong> ：指定加锁对象，对给定对象/类加锁。<code>synchronized(this|object)</code> 表示进入同步代码库前要获得<strong>给定对象的锁</strong>。<code>synchronized(类.class)</code> 表示进入同步代码前要获得 <strong>当前 class 的锁</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">  <span class="comment">//业务代码</span></span><br><span class="line">&#125;Copy to clipboardErrorCopied</span><br></pre></td></tr></table></figure>
+
+<h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>volatile可以保证变量的的可见性和禁止指令重排序，但不能保证操作的原子性。</p>
+<p>单例的一种经典实现方式——双重检查模式：</p>
+<p>首先是为什么要用两个if，去掉外层的if会导致无论是否已经实例化，都会进入同步代码段，导致性能变低；去掉内层if，可能会出现这么一种情况：线程A执行1之后，执行2之前，线程B刚好实例化了单例类，那么线程A进入同步代码块就好再实例化一次，到此破坏单例。这是对于synchroized的解释。</p>
+<p>那么为什么instance要用volatile修饰呢？uniqueInstance 采用 volatile 关键字修饰也是很有必要的， <code>uniqueInstance = new Singleton();</code> 这段代码其实是分为三步执行：</p>
+<ol>
+<li>为 uniqueInstance 分配内存空间</li>
+<li>初始化 uniqueInstance</li>
+<li>将 uniqueInstance 指向分配的内存地址</li>
+</ol>
+<p>但是由于 JVM 具有指令重排的特性，执行顺序有可能变成 1&gt;3&gt;2。指令重排在单线程环境下不会出现问题，但是在多线程环境下会导致一个线程获得还没有初始化的实例。例如，线程 T1 执行了 1 和 3，此时 T2 调用 getUniqueInstance() 后发现 uniqueInstance 不为空，因此返回 uniqueInstance，但此时 uniqueInstance 还未被初始化。</p>
+<p>使用 volatile 可以禁止 JVM 的指令重排，保证在多线程环境下也能正常运行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;                   <span class="comment">//1</span></span><br><span class="line">            <span class="keyword">synchronized</span>(Singleton.class)&#123;      <span class="comment">//2 </span></span><br><span class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singletion();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="同步锁的一些概念"><a href="#同步锁的一些概念" class="headerlink" title="同步锁的一些概念"></a>同步锁的一些概念</h3><h4 id="可重入锁与不可重入锁"><a href="#可重入锁与不可重入锁" class="headerlink" title="可重入锁与不可重入锁"></a>可重入锁与不可重入锁</h4><p>所谓重入锁，指的是以线程为单位，当一个线程获取对象锁之后，这个线程可以再次获取本对象上的锁，而其他的线程是不可以的。</p>
+<p>ynchronized 和  ReentrantLock 都是可重入锁。</p>
+<p>可重入锁的意义在于防止死锁。</p>
+<p>实现原理是通过为每个锁关联一个请求计数器和一个占有它的线程。当计数为0时，认为锁是未被占有的；线程请求一个未被占有的锁时，JVM将记录锁的占有者，并且将请求计数器置为1 。</p>
+<p>如果同一个线程再次请求这个锁，计数将递增；</p>
+<p>每次占用线程退出同步块，计数器值将递减。直到计数器为0,锁被释放。</p>
+<h4 id="乐观锁和悲观锁"><a href="#乐观锁和悲观锁" class="headerlink" title="乐观锁和悲观锁"></a>乐观锁和悲观锁</h4><p>乐观锁比较适用于读多写少的情况(多读场景)，悲观锁比较适用于写多读少的情况(多写场景)。</p>
+<p>悲观锁，正如其名，具有强烈的独占和排他特性。总是假设最坏的情况，每次读取数据的时候都默认其他线程会更改数据，因此需要进行加锁操作。指的是对数据被外界(包括本系统当前的其他事务，以及来自外部系统的事务处理)修改持保守态度</p>
+<p>乐观锁是相对悲观锁而言的，乐观锁假设数据一般情况下不会造成冲突，所以在数据进行提交更新的时候，才会正式对数据的冲突与否进行检测，如果发现冲突了，则返回给用户错误的信息，让用户决定如何去做。乐观锁适用于读操作多的场景，这样可以提高程序的吞吐量。</p>
+<h4 id="公平锁和非公平锁"><a href="#公平锁和非公平锁" class="headerlink" title="公平锁和非公平锁"></a>公平锁和非公平锁</h4><p>下面的文章讲的很不错</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/heyouxin/p/13037146.html">【并发编程】公平锁与非公平锁的区别 - faylinn - 博客园 (cnblogs.com)</a></p>
+<p>简单来说，当一个锁释放时，公平锁是保证总是等待队列队头的线程去申请使用资源，而非公平锁会允许队头线程和其它非等待队列的线程进行申请。</p>
+<p>具体来讲，在ReentrantLock的实现中，会使用compareAndSetState(0, acquires）方法判断当前锁占用情况，若==0则尝试获取资源，这是非公平的。而公平锁会!hasQueuedPredecessors()来首先判断是否在队头，再判断锁占用情况。</p>
+<h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>阻塞队列是线程池技术的基础，也可用于生产者和消费者的场景。实现原理，嗯？这不就是操作系统的信号量机制嘛，让我翻翻以前的专业书。。。。阻塞队列顾名思义，就是“阻塞”的“队列”。首先是阻塞，若队列中没有数据，消费者线程就会阻塞，反之生产者阻塞，而“队列”的实现就有很多种，不同的队列也会实现不同的效果，下面介绍一下java中提供的阻塞队列</p>
+<ul>
+<li>ArrayBlockingQueue：由数组结构组成的有界阻塞队列。支持公平和非公平队列。</li>
+<li>LinkedBockingQueue：由链表结构组成的有界阻塞队列。对消费端和生产端使用了两个不同的锁来控制。</li>
+<li>PriorityBolockingQueue：支持优先级排序的无界阻塞队列。</li>
+<li>DelayQueue：支持延时获取元素的无界阻塞队列。</li>
+<li>SynchronousQueue：不存储元素的阻塞队列。</li>
+<li>LinkedTransferQueue：由链表结构组成的无界阻塞队列。</li>
+<li>LinkedBlockingDeque：由链表结构组成的双向阻塞队列。</li>
+</ul>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p>先上参考文档：<a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/./docs/java/multi-thread/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93">JavaGuide (gitee.io)</a></p>
+<p>在《阿里巴巴 Java 开发手册》“并发处理”这一章节，明确指出线程资源必须通过线程池提供，不允许在应用中自行显示创建线程。使用线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源开销，解决资源不足的问题。如果不使用线程池，有可能会造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。</p>
+<p>线程池的实现有多种，最基础也是最重要的是<code>ThreadPoolExecutor</code>，期中包括了几个重要概念</p>
+<ul>
+<li><code>corePoolSize</code>，核心线程数。最少可以同时运行的线程数量。</li>
+<li><code>workQueue</code>，工作队列。当前运行线程数已经大于核心线程数，则将新任务存放在队列中。可选的餐食就是上面提到的阻塞队列。</li>
+<li><code>maximumPoolSize</code>，最大线程数。队列中的任务也满的时候，线程池能够运行的最大线程数量。</li>
+</ul>
+<p>弄懂上面这三个概念，就可以看懂线程池的实现原理了：</p>
+<p><img src="https://snailclimb.gitee.io/javaguide/docs/java/multi-thread/images/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/%E5%9B%BE%E8%A7%A3%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.png" alt="图解线程池实现原理"></p>
+<p>除了这三个重要的概念外，ThreadPoolExecutor还有其它几个常用参数：</p>
+<ul>
+<li><p><strong><code>keepAliveTime</code></strong>:当线程池中的线程数量大于 <code>corePoolSize</code> 的时候，如果这时没有新的任务提交，核心线程外的线程不会立即销毁，而是会等待，直到等待的时间超过了 <code>keepAliveTime</code>才会被回收销毁；</p>
+</li>
+<li><p><strong><code>unit</code></strong> : <code>keepAliveTime</code> 参数的时间单位。</p>
+</li>
+<li><p><strong><code>threadFactory</code></strong> :executor 创建新线程的时候会用到。</p>
+</li>
+<li><p><strong><code>handler</code></strong> :饱和策略。关于饱和策略下面单独介绍一下。</p>
+<ul>
+<li>**<code>ThreadPoolExecutor.AbortPolicy</code>**：抛出 <code>RejectedExecutionException</code>来拒绝新任务的处理。</li>
+<li>**<code>ThreadPoolExecutor.CallerRunsPolicy</code>**：调用执行自己的线程运行任务，也就是直接在调用<code>execute</code>方法的线程中运行(<code>run</code>)被拒绝的任务，如果执行程序已关闭，则会丢弃该任务。因此这种策略会降低对于新任务提交速度，影响程序的整体性能。如果您的应用程序可以承受此延迟并且你要求任何一个任务请求都要被执行的话，你可以选择这个策略。</li>
+<li><strong><code>ThreadPoolExecutor.DiscardPolicy</code>：</strong> 不处理新任务，直接丢弃掉。</li>
+<li><strong><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：</strong> 此策略将丢弃最早的未处理的任务请求。</li>
+</ul>
+</li>
+</ul>
+<p>这样我们就可以构建一个ThreadPoolExecutor了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过ThreadPoolExecutor构造函数自定义参数创建</span></span><br><span class="line">ThreadPoolExecutor executor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">    CORE_POOL_SIZE,</span><br><span class="line">    MAX_POOL_SIZE,</span><br><span class="line">    KEEP_ALIVE_TIME,</span><br><span class="line">    TimeUnit.SECONDS,</span><br><span class="line">    <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(QUEUE_CAPACITY),</span><br><span class="line">    <span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy()</span><br><span class="line">);</span><br><span class="line">executor.execute(worker);</span><br></pre></td></tr></table></figure>
+
+<p><code>worker</code>可以实现Runnable接口，也可以实现<code>callable</code>接口。</p>
+<p>通过设置ThreadPoolExecutor的参数可以实现各种要求的线程池，常用的有<code>FixedThreadPool</code>，<code>CachedThreadPool</code>，<code>SingleThreadExecutor</code>，<code>ScheduledThreadPool</code>。这里就不再具体介绍了。</p>
+<h2 id="安卓线程通信"><a href="#安卓线程通信" class="headerlink" title="安卓线程通信"></a>安卓线程通信</h2><h3 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h3><p>Handler四大组成部分：</p>
+<ul>
+<li><code>Message</code>：消息，内部可以携带少量的信息，用户在不同线程之间传递数据。除了what可以携带一个整型数据外，还可以使用arg1和arg2以及obj字段携带数据。</li>
+<li><code>Handler</code>：处理者，用于发送消息和处理消息。发送一般是使用Handler的sendMessage()、post()方法，处理在handleMessage()方法中。</li>
+<li><code>MessageQueue</code>：消息队列，用于存放所有通过Handler发送的消息，先进先出。每个线程只有一个MessageQueue对象。</li>
+<li><code>Looper</code>：消息队列的管家，它会不断loop，将消息队列中的消息去除，并传递到对应的Handler中，每个线程只会有一个Loper对象。</li>
+</ul>
+<p>看看源码。首先是类介绍中这么说：</p>
+<blockquote>
+<p>Each Handler instance is associated with a single thread and that thread’s message queue.</p>
+</blockquote>
+<p>一个Handler的实例会和一个线程关联，并且也和这个线程的消息队列关联。等等，这里好像有点不理解，下面的例子中有两个线程，但只有一个handler实例啊，这是咋回事？其实这是对的，下面例子中的Handler是和主线程绑定的，也只用到了这个handler来更新主线程里面的UI，子线程也可以创建handler啊，但是用不到罢了。</p>
+<p>Handler的使用场景并不是特别多，一般用于线程较少时，线程一多手动处理各种handler就太麻烦了。</p>
+<p>例子，在子线程中更新UI</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span></span>&#123;</span><br><span class="line">    WeakReference&lt;Activity&gt; mActivityReference;</span><br><span class="line"></span><br><span class="line">    TestHandler(Activity activity)&#123;</span><br><span class="line">        mActivityReference=<span class="keyword">new</span> WeakReference&lt;&gt;(activity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Activity activity=mActivityReference.get();</span><br><span class="line">        <span class="keyword">if</span> (activity!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (msg.what == <span class="number">1</span>) &#123;</span><br><span class="line">                TextView textView = activity.findViewById(R.id.tvHandler);</span><br><span class="line">                textView.setText(<span class="string">&quot;你改变了文字&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> TestHandler handler = <span class="keyword">new</span> TestHandler(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_handler);</span><br><span class="line">    Button button = findViewById(R.id.btnChangeText);</span><br><span class="line">    button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">            ThreadPoolExecutor threadPoolExecutor = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">                <span class="number">1</span>, <span class="number">1</span>, <span class="number">0L</span>, TimeUnit.MICROSECONDS, <span class="keyword">new</span> LinkedBlockingQueue&lt;&gt;());</span><br><span class="line">            threadPoolExecutor.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    Message message = <span class="keyword">new</span> Message();</span><br><span class="line">                    message.what = <span class="number">1</span>;</span><br><span class="line">                    handler.sendMessage(message);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AsyncTask"><a href="#AsyncTask" class="headerlink" title="AsyncTask"></a>AsyncTask</h3><p>该工具已经被弃用，所以就不深入讲了，多线程直接用Java的Thread类或者多线程，配合Handler使用。关于弃用原因，可以看<a target="_blank" rel="noopener" href="https://www.techyourchance.com/asynctask-deprecated/">Android AsyncTask Deprecated, Now What? (techyourchance.com)</a></p>
+<p>简单写一个下载示例，基本上怎么使用都在注释里面了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 模拟下载任务，继承自AsyncTask</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> wxc</span></span><br><span class="line"><span class="comment">* <span class="doctag">@date</span> 2021.5.25</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DownloadTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Integer</span>, <span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在后台任务开始之前调用</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        progressBar.setVisibility(View.VISIBLE);</span><br><span class="line">        progressBar.setProgress(<span class="number">0</span>);</span><br><span class="line">        downloadTitle.setVisibility(View.VISIBLE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 该方法中运行在子线程中</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> strings 对应创建对象时的输入参数，此处为下载标题</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span> 返回任务完成情况</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Boolean <span class="title">doInBackground</span><span class="params">(String... strings)</span> </span>&#123;</span><br><span class="line">        downloadTitle.setText(strings[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> MAX_NUMBER = <span class="number">10000000</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span> * MAX_NUMBER; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i % MAX_NUMBER == <span class="number">0</span>) &#123;</span><br><span class="line">                    publishProgress(i / MAX_NUMBER);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 在此方法中对UI进行操作，数据源自doInBackground()方法中调用的publishProgress()。</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> values 要更新的数据</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(Integer... values)</span> </span>&#123;</span><br><span class="line">        progressBar.setProgress(values[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 在后台任务执行完毕并通过return语句返回时，调用此方法。</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> aBoolean 返回的数据</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Boolean aBoolean)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (aBoolean) &#123;</span><br><span class="line">            MyToast.toast(<span class="string">&quot;下载完成&quot;</span>);</span><br><span class="line">            progressBar.setVisibility(View.GONE);</span><br><span class="line">            downloadTitle.setVisibility(View.GONE);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            MyToast.toast(<span class="string">&quot;下载失败&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DownloadTask downloadTask = <span class="keyword">new</span> DownloadTask();</span><br><span class="line">downloadTask.execute(<span class="string">&quot;模拟下载&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/14/%E5%AE%89%E5%8D%93Fragment/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/26/%E7%BD%91%E7%BB%9C/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wxc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
